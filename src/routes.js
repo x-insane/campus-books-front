@@ -5,6 +5,11 @@ import OrderListPage from './pages/order-list-page';
 import OrderDetailPage from './pages/order-detail-page';
 import UserCenterPage from './pages/user-center-page';
 import LoginPage from './pages/login-page';
+import AgentApplyPage from './pages/agent-apply-page';
+import UploadBookPage from './pages/upload-book-page';
+import UploadBookList from './pages/upload-book-list';
+import UploadBookPayPage from './pages/upload-book-pay-page';
+import UploadBookDetailPage from './pages/upload-book-detail-page';
 
 export default [
     {
@@ -36,4 +41,24 @@ export default [
         path: '/order/:order_id',
         component: OrderDetailPage
     },
+    {
+        path: '/agent/apply',
+        component: AgentApplyPage
+    },
+    {
+        path: '/books/upload',
+        component: UploadBookPage
+    },
+    {
+        path: '/books/upload/list',
+        component: UploadBookList
+    },
+    {
+        path: '/books/upload/pay/:upload_id',
+        component: UploadBookPayPage
+    },
+    {
+        path: '/books/upload/detail/:upload_id',
+        component: UploadBookDetailPage
+    }
 ]

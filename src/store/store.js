@@ -9,7 +9,8 @@ const store = new Vuex.Store({
     state: {
         books: [],
         shopping_cart: {},
-        orders: []
+        orders: [],
+        user: null
     },
     getters: {
         shopping_cart_count: state => {
@@ -79,7 +80,7 @@ const store = new Vuex.Store({
     actions: {
         fetch_books ({ commit }) {
             return new Promise((resolve, reject) => {
-                axios.post(config.api_url + "/books/list")
+                axios.post(config.mock_api_url + "/books/list")
                     .then(res => {
                         if (res.data && res.data.error === 0) {
                             if (window.localStorage) {
@@ -110,7 +111,7 @@ const store = new Vuex.Store({
         },
         fetch_orders ({ commit }) {
             return new Promise((resolve, reject) => {
-                axios.post(config.api_url + "/books/order/list")
+                axios.post(config.mock_api_url + "/books/order/list")
                     .then(res => {
                         if (res.data && res.data.error === 0) {
                             commit('update_orders', res.data.orders);
@@ -125,7 +126,7 @@ const store = new Vuex.Store({
         },
         submit_order ({ commit, state, dispatch }, seller_id) {
             return new Promise((resolve, reject) => {
-                axios.post(config.api_url + "/books/order", {
+                axios.post(config.mock_api_url + "/books/order", {
                     seller: seller_id,
                     books: Object.keys(state.shopping_cart[seller_id].books).map(book_id => {
                         return {
@@ -145,10 +146,24 @@ const store = new Vuex.Store({
                     reject ("request fail!", err)
                 });
             })
+        },
+        fetch_user_info ({ state }) {
+            return new Promise((resolve, reject) => {
+                axios.post(config.api_url + "/user/info").then(res => {
+                    if (res.data && res.data.error === 0) {
+                        state.user = res.data.user;
+                        resolve();
+                    } else
+                        reject(res.data.msg);
+                }).catch (err => {
+                    reject ("request fail!", err)
+                });
+            })
         }
     }
 });
 
 store.dispatch("fetch_books");
+store.dispatch("fetch_user_info");
 
 export default store;
