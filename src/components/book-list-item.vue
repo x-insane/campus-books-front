@@ -43,7 +43,7 @@
             detail_page (book, nickname) {
                 this.$f7router.navigate('/detail/' + book.book_id, {
                     props: {
-                        book: book,
+                        // book: book,
                         seller: nickname
                     }
                 })

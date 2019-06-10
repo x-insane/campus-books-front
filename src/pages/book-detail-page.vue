@@ -13,7 +13,7 @@
             <p>价格：{{ final_book.price }} 元</p>
             <p>余量：{{ final_book.count }}</p>
             <p>卖家：{{ final_seller }}</p>
-            <p>学校：{{ final_book.univisity }} {{ final_book.area }}</p>
+            <p>学校：{{ final_book.university }} {{ final_book.area }}</p>
             <p>宿舍楼：{{ final_book.dorm }}</p>
             <p v-if="final_book.college">学院：{{ final_book.college }}</p>
             <p v-if="final_book.major">专业：{{ final_book.major }}</p>

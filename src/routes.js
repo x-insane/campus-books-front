@@ -10,6 +10,7 @@ import UploadBookPage from './pages/upload-book-page';
 import UploadBookList from './pages/upload-book-list';
 import UploadBookPayPage from './pages/upload-book-pay-page';
 import UploadBookDetailPage from './pages/upload-book-detail-page';
+import AgentDetailPage from './pages/agent-detail-page';
 
 export default [
     {
@@ -40,6 +41,10 @@ export default [
     {
         path: '/order/:order_id',
         component: OrderDetailPage
+    },
+    {
+        path: '/agent',
+        component: AgentDetailPage
     },
     {
         path: '/agent/apply',

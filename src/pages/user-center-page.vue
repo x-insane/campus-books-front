@@ -13,9 +13,9 @@
             </div>
         </div>
         <f7-list v-if="user">
-            <f7-list-item title="修改资料" link="/user/edit">
-                <f7-icon slot="media" f7="edit"></f7-icon>
-            </f7-list-item>
+<!--            <f7-list-item title="修改资料" link="/user/edit">-->
+<!--                <f7-icon slot="media" f7="edit"></f7-icon>-->
+<!--            </f7-list-item>-->
             <f7-list-item title="我的订单" link="/orders">
                 <f7-icon slot="media" f7="document_text"></f7-icon>
             </f7-list-item>
@@ -25,7 +25,8 @@
             <f7-list-item title="挂售订单" link="/books/upload/list">
                 <f7-icon slot="media" f7="keyboard_fill"></f7-icon>
             </f7-list-item>
-            <f7-list-item :title="user.is_agent ? '代理商入口' : '申请成为代理商'" :link="user.is_agent ? '/agent' : '/agent/apply'">
+            <f7-list-item :title="user.agent ? (user.agent.lease_time ? '代理商入口' : '正在申请代理商，请耐心等待') : '申请成为代理商'"
+                          :link="user.agent ? (user.agent.lease_time ? '/agent' : '') : '/agent/apply'">
                 <f7-icon slot="media" f7="infinite"></f7-icon>
             </f7-list-item>
         </f7-list>
@@ -37,8 +38,10 @@
 
     export default {
         created() {
-            if (!this.user)
-                this.$f7router.navigate('/user/login')
+            this.fetch_user_info(true).then(() => {
+                if (!this.user)
+                    this.$f7router.navigate('/user/login')
+            });
         },
 
         computed: {

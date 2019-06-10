@@ -9,7 +9,7 @@
         <!-- main -->
         <f7-list v-for="seller of books" media-list :key="seller.seller">
             <f7-list-item group-title>
-                <span>华南理工大学 - 大学城校区 - C12 - {{ seller.nickname }}</span>
+                <span>{{ seller.university }}{{ seller.area ? (' - ' + seller.area) : '' }} - {{ seller.dorm }} - {{ seller.nickname }}</span>
             </f7-list-item>
             <book-list-item v-for="(book, index) in seller.books" :key="index"
                             :book="book" :nickname="seller.nickname"
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapMutations } from 'vuex';
+    import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
     import BookListItem from '../components/book-list-item';
 
     export default {
@@ -55,9 +55,18 @@
             BookListItem
         },
 
+        created() {
+            this.fetch_books().catch(msg => {
+                this.$f7.dialog.alert(msg || "获取书籍列表失败")
+            })
+        },
+
         methods: {
             ...mapMutations([
                 'update_book_want_count'
+            ]),
+            ...mapActions([
+                'fetch_books'
             ])
         }
     }

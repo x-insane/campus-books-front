@@ -123,6 +123,7 @@
 
 <script>
     import api from "../utils/api";
+    import config from "../config/config";
 
     export default {
         data() {
@@ -135,17 +136,8 @@
                 remark: '',
                 lease: 30,
                 count: 1,
-                cover: 'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                photos: [
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                    'http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg',
-                ],
+                cover: '',
+                photos: [],
                 pending: false
             }
         },
@@ -159,10 +151,31 @@
         },
         methods: {
             upload_cover () {
-                console.log(this.$refs.upload_cover_input.files)
+                this.upload_photo_helper(this.$refs.upload_cover_input).then(url => {
+                    this.cover = url
+                })
             },
             upload_photo () {
-                console.log(this.$refs.upload_photo_input.files)
+                this.upload_photo_helper(this.$refs.upload_photo_input).then(url => {
+                    this.photos.push(url)
+                })
+            },
+            upload_photo_helper (item) {
+                return new Promise((resolve, reject) => {
+                    let form = new FormData();
+                    if (item.files.length > 0) {
+                        form.append("image", item.files[0]);
+                        item.value = "";
+                        api.upload_private_photo(form).then(res => {
+                            if (res.error === 0) {
+                                resolve(config.root_url + res.url);
+                            } else {
+                                this.$f7.dialog.alert(res.msg || "上传失败");
+                                reject();
+                            }
+                        })
+                    }
+                });
             },
             submit () {
                 this.pending = true;

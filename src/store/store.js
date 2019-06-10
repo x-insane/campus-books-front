@@ -80,7 +80,7 @@ const store = new Vuex.Store({
     actions: {
         fetch_books ({ commit }) {
             return new Promise((resolve, reject) => {
-                axios.post(config.mock_api_url + "/books/list")
+                axios.post(config.api_url + "/books/list")
                     .then(res => {
                         if (res.data && res.data.error === 0) {
                             if (window.localStorage) {
@@ -105,7 +105,7 @@ const store = new Vuex.Store({
                         else
                             reject(res.data.msg);
                     }).catch (err => {
-                        reject ("request fail!", err)
+                        reject ("request fail! " + err, err)
                     })
             })
         },
@@ -147,8 +147,12 @@ const store = new Vuex.Store({
                 });
             })
         },
-        fetch_user_info ({ state }) {
+        fetch_user_info ({ state }, flush) {
             return new Promise((resolve, reject) => {
+                if (state.user && !flush) {
+                    resolve();
+                    return;
+                }
                 axios.post(config.api_url + "/user/info").then(res => {
                     if (res.data && res.data.error === 0) {
                         state.user = res.data.user;
@@ -162,8 +166,5 @@ const store = new Vuex.Store({
         }
     }
 });
-
-store.dispatch("fetch_books");
-store.dispatch("fetch_user_info");
 
 export default store;

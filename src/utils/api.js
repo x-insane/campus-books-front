@@ -20,7 +20,7 @@ export default {
     },
 
     fetch_book_detail (book_id) {
-        return axios.post(config.mock_api_url + "/books/detail", { book_id })
+        return axios.post(config.api_url + "/books/detail", { book_id })
             .then(res => res.data)
     },
     fetch_order_detail (order_id) {
@@ -37,10 +37,20 @@ export default {
     upload_book_detail (upload_id) {
         return this.post("/books/upload/detail", { upload_id })
     },
-    upload_book_wxpay (upload_id) {
-        return this.post("/books/upload/wxpay", { upload_id })
+    // upload_book_wxpay (upload_id) {
+    //     return this.post("/books/upload/wxpay", { upload_id })
+    // },
+    // upload_book_wxpay_query (upload_id) {
+    //     return this.post("/books/upload/wxpay/query", { upload_id })
+    // },
+
+    upload_public_photo (form) {
+        return this.post("/upload/public", form)
     },
-    upload_book_wxpay_query (upload_id) {
-        return this.post("/books/upload/wxpay/query", { upload_id })
+    upload_private_photo (form) {
+        return this.post("/upload/private", form)
     },
+    submit_apply_agent (data) {
+        return this.post("/agent/request", data)
+    }
 }

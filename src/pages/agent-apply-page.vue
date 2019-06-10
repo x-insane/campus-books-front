@@ -101,12 +101,15 @@
         </f7-list>
 
         <f7-block>
-            <f7-button @click="submit">提交</f7-button>
+            <f7-button :disabled="pending" @click="submit">提交</f7-button>
         </f7-block>
     </f7-page>
 </template>
 
 <script>
+    import api from "../utils/api";
+    import config from "../config/config";
+
     export default {
         data () {
             return {
@@ -119,20 +122,27 @@
                 college: "",
                 major: "",
                 lease: 365,
-                photos: [
-                    "filename1",
-                    "filename2",
-                    "filename3",
-                    "filename4"
-                ]
+                photos: [],
+                pending: false,
             }
         },
         methods: {
             upload_photo () {
-                console.log(this.$refs.upload_photo_input.files)
+                let form = new FormData();
+                if (this.$refs.upload_photo_input.files.length > 0) {
+                    form.append("image", this.$refs.upload_photo_input.files[0]);
+                    this.$refs.upload_photo_input.value = "";
+                    api.upload_private_photo(form).then(res => {
+                        if (res.error === 0) {
+                            this.photos.push(config.root_url + res.url)
+                        } else {
+                            this.$f7.dialog.alert(res.msg || "上传失败")
+                        }
+                    })
+                }
             },
             submit () {
-                console.log({
+                let data = {
                     name: this.name,
                     sno: this.sno,
                     university: this.university,
@@ -143,6 +153,24 @@
                     major: this.major,
                     lease: this.lease,
                     photos: this.photos
+                };
+                let ok = true;
+                Object.keys(data).forEach(k => {
+                    if (k !== "area" && !data[k])
+                        ok = false;
+                });
+                if (!ok) {
+                    this.$f7.dialog.alert("请将表单填写完整再提交");
+                    return
+                }
+                this.pending = true;
+                api.submit_apply_agent(data).then(res => {
+                    if (res.error === 0) {
+                        this.$f7router.navigate('/user');
+                    } else {
+                        this.$f7.dialog.alert(res.msg || "申请失败，请稍后再试");
+                        this.pending = false;
+                    }
                 })
             }
         }

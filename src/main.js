@@ -1,8 +1,8 @@
 import Vue from 'vue';
-// import axios from 'axios';
-//
-// // 允许跨域时携带cookie，线上环境应删除
-// axios.defaults.withCredentials = true;
+import axios from 'axios';
+
+// 允许跨域时携带cookie，线上环境应删除
+axios.defaults.withCredentials = true;
 
 // Import F7 Bundle
 import Framework7 from 'framework7/framework7.esm.bundle.js'
