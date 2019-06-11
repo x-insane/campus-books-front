@@ -24,7 +24,7 @@ export default {
             .then(res => res.data)
     },
     fetch_order_detail (order_id) {
-        return axios.post(config.mock_api_url + "/order/query", { order_id })
+        return axios.post(config.api_url + "/books/order/query", { order_id })
             .then(res => res.data)
     },
 

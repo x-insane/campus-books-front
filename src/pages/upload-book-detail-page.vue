@@ -1,7 +1,7 @@
 <template>
     <f7-page hide-navbar-on-scroll>
         <!-- header -->
-        <f7-navbar :title="final_book ? final_book.name : '校园二手书交易平台'" back-link="back">
+        <f7-navbar :title="final_book ? final_book.name : '校园二手书交易平台'" back-link="back" back-link-url="/books/upload/list">
             <f7-link slot="nav-right" iconF7="icon-bars" panel-open="right"></f7-link>
         </f7-navbar>
 

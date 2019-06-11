@@ -111,7 +111,7 @@ const store = new Vuex.Store({
         },
         fetch_orders ({ commit }) {
             return new Promise((resolve, reject) => {
-                axios.post(config.mock_api_url + "/books/order/list")
+                axios.post(config.api_url + "/books/order/list")
                     .then(res => {
                         if (res.data && res.data.error === 0) {
                             commit('update_orders', res.data.orders);
@@ -126,12 +126,12 @@ const store = new Vuex.Store({
         },
         submit_order ({ commit, state, dispatch }, seller_id) {
             return new Promise((resolve, reject) => {
-                axios.post(config.mock_api_url + "/books/order", {
+                axios.post(config.api_url + "/books/order", {
                     seller: seller_id,
                     books: Object.keys(state.shopping_cart[seller_id].books).map(book_id => {
                         return {
                             book: Number.parseInt(book_id),
-                            count: state.shopping_cart[seller_id].books[book_id].count
+                            count: state.shopping_cart[seller_id].books[book_id].want_count
                         }
                     })
                 }).then(res => {

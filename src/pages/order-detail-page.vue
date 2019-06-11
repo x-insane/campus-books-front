@@ -11,10 +11,10 @@
                 <span>订单信息</span>
             </f7-list-item>
             <f7-list-item>订单ID：{{ final_order.order_id }}</f7-list-item>
-            <f7-list-item>
-                订单状态：{{ final_order.status === "pending" ? "待取货" : ( final_order.status === "success" ? "交易完成" : "交易取消" ) }}
-                <a href="#" v-if="final_order.status === 'pending'" style="margin-left: 8px">取消订单</a>
-            </f7-list-item>
+<!--            <f7-list-item>-->
+<!--                订单状态：{{ final_order.status === "pending" ? "待取货" : ( final_order.status === "success" ? "交易完成" : "交易取消" ) }}-->
+<!--                <a href="#" v-if="final_order.status === 'pending'" style="margin-left: 8px">取消订单</a>-->
+<!--            </f7-list-item>-->
             <f7-list-item v-if="final_order.cancel_reason">订单取消原因：{{ final_order.cancel_reason }}</f7-list-item>
             <f7-list-item>订单总价：{{ final_order.price.toFixed(2) }} 元</f7-list-item>
             <f7-list-item>创建时间：{{ final_order.create_time }}</f7-list-item>
